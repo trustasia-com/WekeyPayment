@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="200dp"
+    android:layout_height="180dp"
+    android:background="@drawable/shape_white_r10"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:ignore="SpUsage">
+
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/icon_success" />
+
+    <TextView
+        android:id="@+id/tv_state"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="订阅成功"
+        android:textColor="#333"
+        android:textSize="18dp" />
+
+
+</LinearLayout>
+
