@@ -11,7 +11,7 @@ public class PaymentManager {
     }
 
     public interface TokenFetcher {
-        void getToken(ResultCallback callback);
+        void getToken(String productId, ResultCallback callback);
     }
 
     private PaymentManager() {
@@ -28,8 +28,13 @@ public class PaymentManager {
         return INSTANCE;
     }
 
-    public void processPayment(AppCompatActivity activity) {
-        ContentFragment fragment = ContentFragment.newInstance();
-        fragment.show(activity.getSupportFragmentManager(), "Wekey");
+    public void processPayment(AppCompatActivity activity, String productId) {
+        new ActionSheetDialog(activity).builder().addSheetItem("支付宝", ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
+            @Override
+            public void onClick(int which) {
+                ContentFragment fragment = ContentFragment.newInstance(productId);
+                fragment.show(activity.getSupportFragmentManager(), "Wekey");
+            }
+        }).show();
     }
 }

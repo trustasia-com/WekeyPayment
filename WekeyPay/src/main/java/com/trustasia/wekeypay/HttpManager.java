@@ -99,8 +99,8 @@ public class HttpManager {
         });
     }
 
-    public void testToken(PaymentManager.ResultCallback resultCallback) {
-        Call call = mClient.newCall(new Request.Builder().url("https://temp.wekey.cn/subscribe").post(RequestBody.create("{\"product_id\":\"test_sub\"}", MediaType.parse("application/json"))).addHeader("platform", "Android").build());
+    public void testToken(String productId, PaymentManager.ResultCallback resultCallback) {
+        Call call = mClient.newCall(new Request.Builder().url("https://temp.wekey.cn/subscribe").post(RequestBody.create("{\"product_id\":\"" + productId + "\"}", MediaType.parse("application/json"))).addHeader("platform", "Android").build());
         call.enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
@@ -126,7 +126,7 @@ public class HttpManager {
         });
     }
 
-    void fetchToken(PaymentManager.ResultCallback callback) {
-        mFetcher.getToken(callback);
+    void fetchToken(String productId, PaymentManager.ResultCallback callback) {
+        mFetcher.getToken(productId, callback);
     }
 }

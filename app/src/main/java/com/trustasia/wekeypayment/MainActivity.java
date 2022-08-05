@@ -17,14 +17,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.btn_payment_lv_1).setOnClickListener(this);
         findViewById(R.id.btn_payment_lv_2).setOnClickListener(this);
         findViewById(R.id.btn_payment_lv_3).setOnClickListener(this);
-        PaymentManager.getInstance().init(callback -> {
-            HttpManager.getInstance().testToken(callback);
+        PaymentManager.getInstance().init((productId, callback) -> {
+            HttpManager.getInstance().testToken(productId, callback);
         });
     }
 
     @Override
     public void onClick(View view) {
-        PaymentManager.getInstance().processPayment(this);
+        PaymentManager.getInstance().processPayment(this,"test_sub");
     }
 
 }
