@@ -77,14 +77,17 @@ public class ContentFragment extends DialogFragment implements PaymentManager.Re
                         new TipsDialog(requireActivity()).show();
                         dismiss();
                     } else {
-                        new AlertDialog.Builder(requireActivity()).setMessage("订阅未成功！返回重试，若已经支付请点击刷新").setNegativeButton("返回", (dialogInterface, i) -> {
+                        Dialog dialog = new AlertDialog.Builder(requireActivity()).setMessage("订阅未成功！返回重试，若已经支付请点击刷新").setNegativeButton("返回", (dialogInterface, i) -> {
                             dialogInterface.dismiss();
                             dismiss();
                         }).setPositiveButton("刷新", (dialogInterface, i) -> {
                             this.token = t;
                             dialogInterface.dismiss();
                             queryState();
-                        }).create().show();
+                        }).create();
+                        dialog.setCancelable(false);
+                        dialog.setCanceledOnTouchOutside(false);
+                        dialog.show();
                     }
                 });
             });
