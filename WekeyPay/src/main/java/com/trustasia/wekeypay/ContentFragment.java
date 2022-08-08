@@ -26,7 +26,9 @@ public class ContentFragment extends DialogFragment implements PaymentManager.Re
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        HttpManager.getInstance().fetchToken("test_sub", (code, result) -> {
+        assert getArguments() != null;
+        String productId = getArguments().getString(KEY_PRODUCT_ID, "");
+        HttpManager.getInstance().fetchToken(productId, (code, result) -> {
             if (code == 0) {
                 this.token = result;
                 HttpManager.getInstance().startPayment(result, this);
