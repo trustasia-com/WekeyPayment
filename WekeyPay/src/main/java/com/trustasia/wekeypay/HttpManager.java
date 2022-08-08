@@ -24,6 +24,7 @@ public class HttpManager {
     private OkHttpClient mClient;
     private String baseUrl;
     private final Gson gson = new Gson();
+    private boolean isDebug = false;
 
 
     private HttpManager() {
@@ -35,6 +36,10 @@ public class HttpManager {
         this.mClient = new OkHttpClient.Builder().build();
     }
 
+    public void debuggable() {
+        isDebug = true;
+    }
+
     public static synchronized HttpManager getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new HttpManager();
@@ -42,9 +47,15 @@ public class HttpManager {
         return INSTANCE;
     }
 
+    private void log(String msg) {
+        if (isDebug) Log.d("WekeyPay", msg);
+    }
+
 
     public void queryPaymentState(String token, PaymentManager.ResultCallback callback) {
-        Call call = mClient.newCall(new Request.Builder().url(baseUrl + "/ta-finance/subscribe/status").get().addHeader("Authorization", "Bearer " + token).addHeader("platform", "Android").build());
+        String url = baseUrl + "/ta-finance/subscribe/status";
+        log("Request Url --> " + url);
+        Call call = mClient.newCall(new Request.Builder().url(url).get().addHeader("Authorization", "Bearer " + token).addHeader("platform", "Android").build());
         call.enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
@@ -56,7 +67,7 @@ public class HttpManager {
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 try {
                     String json = Objects.requireNonNull(response.body()).string();
-                    Log.d("TAG", json);
+                    log("Response --> \n" + json);
                     BaseResp<SubscribeStatus> token = gson.fromJson(json, new TypeToken<BaseResp<SubscribeStatus>>() {
                     }.getType());
                     if (token.isOk()) {
@@ -73,8 +84,9 @@ public class HttpManager {
     }
 
     public void startPayment(String token, PaymentManager.ResultCallback callback) {
-
-        Call call = mClient.newCall(new Request.Builder().url(baseUrl + "/ta-finance/subscribe/submit").put(RequestBody.create("{\"pay_chan\":\"alipay\"}", MediaType.parse("application/json"))).addHeader("Authorization", "Bearer " + token).addHeader("platform", "Android").build());
+        String url = baseUrl + "/ta-finance/subscribe/submit";
+        log("Request Url --> " + url);
+        Call call = mClient.newCall(new Request.Builder().url(url).put(RequestBody.create("{\"pay_chan\":\"alipay\"}", MediaType.parse("application/json"))).addHeader("Authorization", "Bearer " + token).addHeader("platform", "Android").build());
         call.enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
@@ -85,7 +97,7 @@ public class HttpManager {
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 try {
                     String json = Objects.requireNonNull(response.body()).string();
-                    Log.d("TAG", json);
+                    log("Response --> \n" + json);
                     BaseResp<SubscribeStatus> token = gson.fromJson(json, new TypeToken<BaseResp<SubscribeStatus>>() {
                     }.getType());
                     if (token.isOk()) {

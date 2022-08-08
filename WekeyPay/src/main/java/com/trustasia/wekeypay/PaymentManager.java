@@ -28,6 +28,10 @@ public class PaymentManager {
         return INSTANCE;
     }
 
+    public static void debuggable() {
+        HttpManager.getInstance().debuggable();
+    }
+
     public void processPayment(AppCompatActivity activity, String productId) {
         PaymentSelectionDialog dialog = new PaymentSelectionDialog(activity);
         dialog.setOnSelectedListener(payment -> {

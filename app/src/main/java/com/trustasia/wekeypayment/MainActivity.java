@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
+        PaymentManager.debuggable();
         PaymentManager.getInstance().processPayment(this, "test_sub");
     }
 
