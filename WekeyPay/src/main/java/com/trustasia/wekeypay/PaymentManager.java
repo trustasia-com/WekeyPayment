@@ -17,8 +17,8 @@ public class PaymentManager {
     private PaymentManager() {
     }
 
-    public void init(TokenFetcher fetcher) {
-        HttpManager.getInstance().init(fetcher);
+    public void init(String baseUrl, TokenFetcher fetcher) {
+        HttpManager.getInstance().init(baseUrl, fetcher);
     }
 
     public static synchronized PaymentManager getInstance() {
@@ -29,12 +29,11 @@ public class PaymentManager {
     }
 
     public void processPayment(AppCompatActivity activity, String productId) {
-        new ActionSheetDialog(activity).builder().addSheetItem("支付宝", ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
-            @Override
-            public void onClick(int which) {
-                ContentFragment fragment = ContentFragment.newInstance(productId);
-                fragment.show(activity.getSupportFragmentManager(), "Wekey");
-            }
-        }).show();
+        PaymentSelectionDialog dialog = new PaymentSelectionDialog(activity);
+        dialog.setOnSelectedListener(payment -> {
+            ContentFragment fragment = ContentFragment.newInstance(productId);
+            fragment.show(activity.getSupportFragmentManager(), "Wekey");
+        });
+        dialog.show();
     }
 }

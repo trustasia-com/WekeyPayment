@@ -71,7 +71,7 @@ public class ContentFragment extends DialogFragment implements PaymentManager.Re
                 }
 
                 requireActivity().runOnUiThread(() -> {
-                    if ("START".equals(result)) {
+                    if (Constants.STATE_START.equals(result)) {
                         new TipsDialog(requireActivity()).show();
                         dismiss();
                     } else {

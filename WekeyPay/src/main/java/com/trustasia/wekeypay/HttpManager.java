@@ -22,14 +22,16 @@ public class HttpManager {
     private static HttpManager INSTANCE;
     private PaymentManager.TokenFetcher mFetcher;
     private OkHttpClient mClient;
+    private String baseUrl;
     private final Gson gson = new Gson();
 
 
     private HttpManager() {
     }
 
-    public void init(PaymentManager.TokenFetcher fetcher) {
+    public void init(String baseUrl, PaymentManager.TokenFetcher fetcher) {
         this.mFetcher = fetcher;
+        this.baseUrl = baseUrl;
         this.mClient = new OkHttpClient.Builder().build();
     }
 
@@ -42,7 +44,7 @@ public class HttpManager {
 
 
     public void queryPaymentState(String token, PaymentManager.ResultCallback callback) {
-        Call call = mClient.newCall(new Request.Builder().url("https://pay-dev.wekey.cn/ta-finance/subscribe/status").get().addHeader("Authorization", "Bearer " + token).addHeader("platform", "Android").build());
+        Call call = mClient.newCall(new Request.Builder().url(baseUrl + "/ta-finance/subscribe/status").get().addHeader("Authorization", "Bearer " + token).addHeader("platform", "Android").build());
         call.enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
@@ -72,7 +74,7 @@ public class HttpManager {
 
     public void startPayment(String token, PaymentManager.ResultCallback callback) {
 
-        Call call = mClient.newCall(new Request.Builder().url("https://pay-dev.wekey.cn/ta-finance/subscribe/submit").put(RequestBody.create("{\"pay_chan\":\"alipay\"}", MediaType.parse("application/json"))).addHeader("Authorization", "Bearer " + token).addHeader("platform", "Android").build());
+        Call call = mClient.newCall(new Request.Builder().url(baseUrl + "/ta-finance/subscribe/submit").put(RequestBody.create("{\"pay_chan\":\"alipay\"}", MediaType.parse("application/json"))).addHeader("Authorization", "Bearer " + token).addHeader("platform", "Android").build());
         call.enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
@@ -99,32 +101,6 @@ public class HttpManager {
         });
     }
 
-    public void testToken(String productId, PaymentManager.ResultCallback resultCallback) {
-        Call call = mClient.newCall(new Request.Builder().url("https://temp.wekey.cn/subscribe").post(RequestBody.create("{\"product_id\":\"" + productId + "\"}", MediaType.parse("application/json"))).addHeader("platform", "Android").build());
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                resultCallback.onResult(-1, e.getMessage());
-            }
-
-            @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                try {
-                    String json = Objects.requireNonNull(response.body()).string();
-                    Log.d("TAG", json);
-                    BaseResp<SubscribeStatus> token = gson.fromJson(json, new TypeToken<BaseResp<SubscribeStatus>>() {
-                    }.getType());
-                    if (token.isOk()) {
-                        resultCallback.onResult(0, token.data.token);
-                    } else {
-                        resultCallback.onResult(token.code, token.error);
-                    }
-                } catch (Exception e) {
-                    resultCallback.onResult(-1, e.getMessage());
-                }
-            }
-        });
-    }
 
     void fetchToken(String productId, PaymentManager.ResultCallback callback) {
         mFetcher.getToken(productId, callback);
