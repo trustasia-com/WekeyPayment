@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.btn_payment_lv_3).setOnClickListener(this);
 
         //Init with baseUrl and tokenFetcher
+        //Base url is for payment server instead of token fetcher
         PaymentManager.getInstance().init("https://pay-dev.wekey.cn", (productId, callback) -> {
             //Get token for each product id from your server and pass it to callback
         });
