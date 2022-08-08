@@ -34,12 +34,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.btn_payment_lv_2).setOnClickListener(this);
         findViewById(R.id.btn_payment_lv_3).setOnClickListener(this);
         PaymentManager.getInstance().init("https://pay-dev.wekey.cn", this::testTokenFetch);
+        PaymentManager.debuggable();
     }
 
     @Override
     public void onClick(View view) {
-        PaymentManager.debuggable();
-        PaymentManager.getInstance().processPayment(this, "test_sub");
+        if (R.id.btn_payment_lv_1 == view.getId()) {
+            PaymentManager.getInstance().processPayment(this, "test_sub_1");
+        } else if (R.id.btn_payment_lv_2 == view.getId()) {
+            PaymentManager.getInstance().processPayment(this, "test_sub_2");
+        } else {
+            PaymentManager.getInstance().processPayment(this, "test_sub_3");
+        }
     }
 
 
