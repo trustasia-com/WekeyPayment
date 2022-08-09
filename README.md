@@ -26,7 +26,7 @@ The following code example shows the three main steps to use this SDK :
 
 2. Call `Payment.debuggable()` to enable logs.
 
-3. Call `PaymentManager.getInstance().processPayment(Activity,ProductId)` start payment process.
+3. Call `PaymentManager.getInstance().processPayment(Activity,ProductId)` to start payment process.
 
 ```java
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
