@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         if (R.id.btn_payment_lv_1 == view.getId()) {
-            PaymentManager.getInstance().processPayment(this, "test_sub_1");
+            PaymentManager.getInstance().processPayment(this, "test_sub_1", state -> Log.d("TAG", state));
         } else if (R.id.btn_payment_lv_2 == view.getId()) {
             PaymentManager.getInstance().processPayment(this, "test_sub_2");
         } else {
